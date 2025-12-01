@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>567R Gaming - Play & Win Real Money</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .wallet {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .balance {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-icon {
+            font-size: 60px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .game-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .game-desc {
+            text-align: center;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            float: right;
+            font-size: 30px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .game-area {
+            margin-top: 20px;
+        }
+
+        .color-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .color-btn {
+            padding: 40px;
+            border: none;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .color-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .red { background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); }
+        .green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .violet { background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); }
+
+        .bet-input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .bet-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .win {
+            background: rgba(56, 239, 125, 0.3);
+            border: 2px solid #38ef7d;
+        }
+
+        .lose {
+            background: rgba(235, 51, 73, 0.3);
+            border: 2px solid #eb3349;
+        }
+
+        .dice-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .dice {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: #333;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .roulette-wheel {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #eb3349 0deg 36deg,
+                #333 36deg 72deg,
+                #eb3349 72deg 108deg,
+                #333 108deg 144deg,
+                #eb3349 144deg 180deg,
+                #333 180deg 216deg,
+                #eb3349 216deg 252deg,
+                #333 252deg 288deg,
+                #eb3349 288deg 324deg,
+                #333 324deg 360deg
+            );
+            margin: 20px auto;
+            position: relative;
+            transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        }
+
+        .roulette-pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #ffd700;
+        }
+
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .number-btn {
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .number-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .number-btn.selected {
+            background: #ffd700;
+            color: #333;
+            border-color: #ffd700;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .wallet {
+                flex-wrap: wrap;
+                font-size: 12px;
+            }
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            .color-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">🎮 567R Gaming</div>
+        <div class="wallet">
+            <span>💰 Balance:</span>
+            <span class="balance" id="balance">₹10,000</span>
+            <button class="btn btn-success" onclick="showDeposit()">Deposit</button>
+            <button class="btn btn-danger" onclick="showWithdraw()">Withdraw</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalBets">0</div>
+                <div class="stat-label">Total Bets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalWins">0</div>
+                <div class="stat-label">Total Wins</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="winRate">0%</div>
+                <div class="stat-label">Win Rate</div>
+            </div>
+        </div>
+
+        <h2 style="text-align: center; margin: 30px 0;">Choose Your Game</h2>
+        
+        <div class="games-grid">
+            <div class="game-card" onclick="openGame('color')">
+                <div class="game-icon">🎨</div>
+                <div class="game-title">Color Prediction</div>
+                <div class="game-desc">Predict the winning color and win 2x your bet!</div>
+            </div>
+
+            <div class="game-card" onclick="openGame('dice')">
+                <div class="game-icon">🎲</div>
+                <div class="game-title">Dice Game</div>
+                <div class="game-desc">Roll the dice and predict high or low!</div>
+            </div>
+
+            <div class="game-card" onclick="openGame('roulette')">
+                <div class="game-icon">🎡</div>
+                <div class="game-title">Roulette</div>
+                <div class="game-desc">Spin the wheel and bet on red or black!</div>
+            </div>
+
+            <div class="game-card" onclick="openGame('number')">
+                <div class="game-icon">🔢</div>
+                <div class="game-title">Number Guess</div>
+                <div class="game-desc">Pick a number between 1-36 and win 35x!</div>
+            </div>
+
+            <div class="game-card" onclick="openGame('coin')">
+                <div class="game-icon">🪙</div>
+                <div class="game-title">Coin Flip</div>
+                <div class="game-desc">Heads or Tails? Double your money!</div>
+            </div>
+
+            <div class="game-card" onclick="openGame('slots')">
+                <div class="game-icon">🎰</div>
+                <div class="game-title">Slot Machine</div>
+                <div class="game-desc">Match 3 symbols and win big!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Color Prediction Modal -->
+    <div id="colorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('colorModal')">&times;</span>
+            <h2>🎨 Color Prediction</h2>
+            <div class="game-area">
+                <input type="number" class="bet-input" id="colorBet" placeholder="Enter bet amount (₹)">
+                <div class="color-options">
+                    <button class="color-btn red" onclick="playColor('red')">RED</button>
+                    <button class="color-btn green" onclick="playColor('green')">GREEN</button>
+                    <button class="color-btn violet" onclick="playColor('violet')">VIOLET</button>
+                </div>
+                <div id="colorResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dice Game Modal -->
+    <div id="diceModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('diceModal')">&times;</span>
+            <h2>🎲 Dice Game</h2>
+            <div class="game-area">
+                <input type="number" class="bet-input" id="diceBet" placeholder="Enter bet amount (₹)">
+                <div class="dice-container">
+                    <div class="dice" id="dice1">?</div>
+                    <div class="dice" id="dice2">?</div>
+                </div>
+                <div class="color-options">
+                    <button class="color-btn red" onclick="playDice('low')">LOW (2-6)</button>
+                    <button class="color-btn green" onclick="playDice('high')">HIGH (8-12)</button>
+                    <button class="color-btn violet" onclick="playDice('seven')">SEVEN (3x)</button>
+                </div>
+                <div id="diceResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Roulette Modal -->
+    <div id="rouletteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('rouletteModal')">&times;</span>
+            <h2>🎡 Roulette</h2>
+            <div class="game-area">
+                <input type="number" class="bet-input" id="rouletteBet" placeholder="Enter bet amount (₹)">
+                <div style="position: relative;">
+                    <div class="roulette-pointer"></div>
+                    <div class="roulette-wheel" id="rouletteWheel"></div>
+                </div>
+                <div class="color-options">
+                    <button class="color-btn red" onclick="playRoulette('red')">RED</button>
+                    <button class="color-btn" style="background: #333;" onclick="playRoulette('black')">BLACK</button>
+                </div>
+                <div id="rouletteResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Number Guess Modal -->
+    <div id="numberModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('numberModal')">&times;</span>
+            <h2>🔢 Number Guess</h2>
+            <div class="game-area">
+                <input type="number" class="bet-input" id="numberBet" placeholder="Enter bet amount (₹)">
+                <div class="number-grid" id="numberGrid"></div>
+                <button class="btn" style="width: 100%; margin-top: 10px;" onclick="playNumber()">PLAY</button>
+                <div id="numberResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Coin Flip Modal -->
+    <div id="coinModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('coinModal')">&times;</span>
+            <h2>🪙 Coin Flip</h2>
+            <div class="game-area">
+                <input type="number" class="bet-input" id="coinBet" placeholder="Enter bet amount (₹)">
+                <div style="font-size: 100px; text-align: center; margin: 20px 0;" id="coinDisplay">🪙</div>
+                <div class="color-options">
+                    <button class="color-btn green" onclick="playCoin('heads')">HEADS</button>
+                    <button class="color-btn violet" onclick="playCoin('tails')">TAILS</button>
+                </div>
+                <div id="coinResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slots Modal -->
+    <div id="slotsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('slotsModal')">&times;</span>
+            <h2>🎰 Slot Machine</h2>
+            <div class="game-area">
+                <input type="number" class="bet-input" id="slotsBet" placeholder="Enter bet amount (₹)">
+                <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0; font-size: 60px;">
+                    <div id="slot1">🍒</div>
+                    <div id="slot2">🍋</div>
+                    <div id="slot3">🍊</div>
+                </div>
+                <button class="btn" style="width: 100%;" onclick="playSlots()">SPIN</button>
+                <div id="slotsResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let balance = 10000;
+        let totalBets = 0;
+        let totalWins = 0;
+        let selectedNumber = null;
+
+        function updateBalance(amount) {
+            balance += amount;
+            document.getElementById('balance').textContent = '₹' + balance.toLocaleString();
+            localStorage.setItem('balance', balance);
+        }
+
+        function updateStats(won) {
+            totalBets++;
+            if (won) totalWins++;
+            document.getElementById('totalBets').textContent = totalBets;
+            document.getElementById('totalWins').textContent = totalWins;
+            document.getElementById('winRate').textContent = ((totalWins / totalBets) * 100).toFixed(1) + '%';
+            localStorage.setItem('totalBets', totalBets);
+            localStorage.setItem('totalWins', totalWins);
+        }
+
+        function openGame(game) {
+            document.getElementById(game + 'Modal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function playColor(color) {
+            const bet = parseInt(document.getElementById('colorBet').value);
+            if (!bet || bet <= 0) {
+                alert('Please enter a valid bet amount!');
+                return;
+            }
+            if (bet > balance) {
+                alert('Insufficient balance!');
+                return;
+            }
+
+            updateBalance(-bet);
+            const colors = ['red', 'green', 'violet'];
+            const result = colors[Math.floor(Math.random() * colors.length)];
+            
+            setTimeout(() => {
+                const won = result === color;
+                const resultDiv = document.getElementById('colorResult');
+                
+                if (won) {
+                    const winAmount = bet * 2;
+                    updateBalance(winAmount);
+                    resultDiv.className = 'result win';
+                    resultDiv.innerHTML = `🎉 YOU WIN! Result: ${result.toUpperCase()}<br>Won: ₹${winAmount}`;
+                } else {
+                    resultDiv.className = 'result lose';
+                    resultDiv.innerHTML = `😢 YOU LOSE! Result: ${result.toUpperCase()}<br>Lost: ₹${bet}`;
+                }
+                updateStats(won);
+            }, 1000);
+        }
+
+        function playDice(choice) {
+            const bet = parseInt(document.getElementById('diceBet').value);
+            if (!bet || bet <= 0) {
+                alert('Please enter a valid bet amount!');
+                return;
+            }
+            if (bet > balance) {
+                alert('Insufficient balance!');
+                return;
+            }
+
+            updateBalance(-bet);
+            const dice1 = Math.floor(Math.random() * 6) + 1;
+            const dice2 = Math.floor(Math.random() * 6) + 1;
+            const total = dice1 + dice2;
+
+            document.getElementById('dice1').textContent = dice1;
+            document.getElementById('dice2').textContent = dice2;
+
+            setTimeout(() => {
+                let won = false;
+                let multiplier = 2;
+
+                if (choice === 'low' && total >= 2 && total <= 6) won = true;
+                if (choice === 'high' && total >= 8 && total <= 12) won = true;
+                if (choice === 'seven' && total === 7) {
+                    won = true;
+                    multiplier = 3;
+                }
+
+                const resultDiv = document.getElementById('diceResult');
+                
+                if (won) {
+                    const winAmount = bet * multiplier;
+                    updateBalance(winAmount);
+                    resultDiv.className = 'result win';
+                    resultDiv.innerHTML = `🎉 YOU WIN! Total: ${total}<br>Won: ₹${winAmount}`;
+                } else {
+                    resultDiv.className = 'result lose';
+                    resultDiv.innerHTML = `😢 YOU LOSE! Total: ${total}<br>Lost: ₹${bet}`;
+                }
+                updateStats(won);
+            }, 1000);
+        }
+
+        function playRoulette(color) {
+            const bet = parseInt(document.getElementById('rouletteBet').value);
+            if (!bet || bet <= 0) {
+                alert('Please enter a valid bet amount!');
+                return;
+            }
+            if (bet > balance) {
+                alert('Insufficient balance!');
+                return;
+            }
+
+            updateBalance(-bet);
+            const wheel = document.getElementById('rouletteWheel');
+            const colors = ['red', 'black'];
+            const result = colors[Math.floor(Math.random() * colors.length)];
+            const rotation = Math.floor(Math.random() * 360) + 1440;
+
+            wheel.style.transform = `rotate(${rotation}deg)`;
+
+            setTimeout(() => {
+                const won = result === color;
+                const resultDiv = document.getElementById('rouletteResult');
+                
+                if (won) {
+                    const winAmount = bet * 2;
+                    updateBalance(winAmount);
+                    resultDiv.className = 'result win';
+                    resultDiv.innerHTML = `🎉 YOU WIN! Result: ${result.toUpperCase()}<br>Won: ₹${winAmount}`;
+                } else {
+                    resultDiv.className = 'result lose';
+                    resultDiv.innerHTML = `😢 YOU LOSE! Result: ${result.toUpperCase()}<br>Lost: ₹${bet}`;
+                }
+                updateStats(won);
+            }, 3000);
+        }
+
+        function initNumberGrid() {
+            const grid = document.getElementById('numberGrid');
+            for (let i = 1; i <= 36; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'number-btn';
+                btn.textContent = i;
+                btn.onclick = () => selectNumber(i, btn);
+                grid.appendChild(btn);
+            }
+        }
+
+        function selectNumber(num, btn) {
+            document.querySelectorAll('.number-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedNumber = num;
+        }
+
+        function playNumber() {
+            const bet = parseInt(document.getElementById('numberBet').value);
+            if (!bet || bet <= 0) {
+                alert('Please enter a valid bet amount!');
+                return;
+            }
+            if (!selectedNumber) {
+                alert('Please select a number!');
+                return;
+            }
+            if (bet > balance) {
+                alert('Insufficient balance!');
+                return;
+            }
+
+            updateBalance(-bet);
+            const result = Math.floor(Math.random() * 36) + 1;
+
+            setTimeout(() => {
+                const won = result === selectedNumber;
+                const resultDiv = document.getElementById('numberResult');
+                
+                if (won) {
+                    const winAmount = bet * 35;
+                    updateBalance(winAmount);
+                    resultDiv.className = 'result win';
+                    resultDiv.innerHTML = `🎉 JACKPOT! Number: ${result}<br>Won: ₹${winAmount}`;
+                } else {
+                    resultDiv.className = 'result lose';
+                    resultDiv.innerHTML = `😢 YOU LOSE! Number: ${result}<br>Lost: ₹${bet}`;
+                }
+                updateStats(won);
+                selectedNumber = null;
+                document.querySelectorAll('.number-btn').forEach(b => b.classList.remove('selected'));
+            }, 1000);
+        }
+
+        function playCoin(choice) {
+            const bet = parseInt(document.getElementById('coinBet').value);
+            if (!bet || bet <= 0) {
+                alert('Please enter a valid bet amount!');
+                return;
+            }
+            if (bet > balance) {
+                alert('Insufficient balance!');
+                return;
+            }
+
+            updateBalance(-bet);
+            const options = ['heads', 'tails'];
+            const result = options[Math.floor(Math.random() * options.length)];
+            
+            setTimeout(() => {
+                const won = result === choice;
+                const resultDiv = document.getElementById('coinResult');
+                
+                if (won) {
+                    const winAmount = bet * 2;
+                    updateBalance(winAmount);
+                    resultDiv.className = 'result win';
+                    resultDiv.innerHTML = `🎉 YOU WIN! Result: ${result.toUpperCase()}<br>Won: ₹${winAmount}`;
+                } else {
+                    resultDiv.className = 'result lose';
+                    resultDiv.innerHTML = `😢 YOU LOSE! Result: ${result.toUpperCase()}<br>Lost: ₹${bet}`;
+                }
+                updateStats(won);
+            }, 1000);
+        }
+
+        function playSlots() {
+            const bet = parseInt(document.getElementById('slotsBet').value);
+            if (!bet || bet <= 0) {
+                alert('Please enter a valid bet amount!');
+                return;
+            }
+            if (bet > balance) {
+                alert('Insufficient balance!');
+                return;
+            }
+
+            updateBalance(-bet);
+            const symbols = ['🍒', '🍋', '🍊', '🍇', '🍉', '⭐', '💎'];
+            
+            let spins = 0;
+            const interval = setInterval(() => {
+                document.getElementById('slot1').textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                document.getElementById('slot2').textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                document.getElementById('slot3').textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                spins++;
+                
+                if (spins > 20) {
+                    clearInterval(interval);
+                    const s1 = symbols[Math.floor(Math.random() * symbols.length)];
+                    const s2 = symbols[Math.floor(Math.random() * symbols.length)];
+                    const s3 = symbols[Math.floor(Math.random() * symbols.length)];
+                    
+                    document.getElementById('slot1').textContent = s1;
+                    document.getElementById('slot2').textContent = s2;
+                    document.getElementById('slot3').textContent = s3;
+                    
+                    const resultDiv = document.getElementById('slotsResult');
+                    
+                    if (s1 === s2 && s2 === s3) {
+                        const winAmount = bet * 10;
+                        updateBalance(winAmount);
+                        resultDiv.className = 'result win';
+                        resultDiv.innerHTML = `🎉 JACKPOT! 3 Matching!<br>Won: ₹${winAmount}`;
+                        updateStats(true);
+                    } else if (s1 === s2 || s2 === s3 || s1 === s3) {
+                        const winAmount = bet * 3;
+                        updateBalance(winAmount);
+                        resultDiv.className = 'result win';
+                        resultDiv.innerHTML = `🎉 YOU WIN! 2 Matching!<br>Won: ₹${winAmount}`;
+                        updateStats(true);
+                    } else {
+                        resultDiv.className = 'result lose';
+                        resultDiv.innerHTML = `😢 YOU LOSE!<br>Lost: ₹${bet}`;
+                        updateStats(false);
+                    }
+                }
+            }, 100);
+        }
+
+        function showDeposit() {
+            const amount = prompt('Enter deposit amount (₹):');
+            if (amount && !isNaN(amount) && amount > 0) {
+                updateBalance(parseInt(amount));
+                alert(`Successfully deposited ₹${amount}!`);
+            }
+        }
+
+        function showWithdraw() {
+            const amount = prompt('Enter withdrawal amount (₹):');
+            if (amount && !isNaN(amount) && amount > 0) {
+                if (amount <= balance) {
+                    updateBalance(-parseInt(amount));
+                    alert(`Successfully withdrawn ₹${amount}!`);
+                } else {
+                    alert('Insufficient balance!');
+                }
+            }
+        }
+
+        window.onload = function() {
+            const savedBalance = localStorage.getItem('balance');
+            const savedBets = localStorage.getItem('totalBets');
+            const savedWins = localStorage.getItem('totalWins');
+            
+            if (savedBalance) balance = parseInt(savedBalance);
+            if (savedBets) totalBets = parseInt(savedBets);
+            if (savedWins) totalWins = parseInt(savedWins);
+            
+            document.getElementById('balance').textContent = '₹' + balance.toLocaleString();
+            document.getElementById('totalBets').textContent = totalBets;
+            document.getElementById('totalWins').textContent = totalWins;
+            if (totalBets > 0) {
+                document.getElementById('winRate').textContent = ((totalWins / totalBets) * 100).toFixed(1) + '%';
+            }
+            
+            initNumberGrid();
+        };
+    </script>
+</body>
+</html>
